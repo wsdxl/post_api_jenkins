@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "4b83509a-5888-4ca1-bc9f-d073607544f5",
+		"name": "csvdata-20190302",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "发布主题",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3d1f4f5c-c364-4c0a-aa07-82d9a0eb55bc",
+						"exec": [
+							"",
+							"var jsonData = pm.response.json();",
+							"var expect_status_code =pm.variables.get(\"c\");",
+							"pm.test(\"状态码\"+expect_status_code, function () {",
+							"    console.log(\"expect_status_code:----\",expect_status_code)",
+							"    ",
+							"    pm.response.to.have.status(expect_status_code);",
+							"});",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"",
+							"",
+							"var status=pm.variables.get(\"status\");",
+							"if(status=='success'){",
+							"    pm.test(\"包含字符串\", function () {",
+							"        pm.expect(pm.response.text()).to.include('\"success\":true');",
+							"});",
+							"    pm.test(\"服务器响应结果success字段值为true\", function () {",
+							"        pm.expect(jsonData[\"success\"]).to.eql(true);",
+							"    ",
+							"        pm.globals.set(\"topic_id\", jsonData[\"topic_id\"])",
+							"});",
+							"    ",
+							"}",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ee7f45ce-3fd8-488b-81ef-fe18a06b19a8",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "accesstoken",
+							"value": "3333a0fb-6dd8-439e-813b-2c3a5213a154",
+							"type": "text"
+						},
+						{
+							"key": "title",
+							"value": "{{title}}",
+							"type": "text"
+						},
+						{
+							"key": "tab",
+							"value": "{{tab}}",
+							"type": "text"
+						},
+						{
+							"key": "content",
+							"value": "{{content}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/topics",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"topics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "主题详情",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5ce82e6d-18c0-4b89-8c74-1de36e5deeea",
+						"exec": [
+							"",
+							"var status=pm.variables.get(\"status\");",
+							"if (status=='success'){",
+							"    var jsonData = pm.response.json();",
+							"    //实际结果值",
+							"    var title=jsonData[\"data\"][\"title\"]",
+							"    var tab=jsonData[\"data\"][\"tab\"]",
+							"    var content=jsonData[\"data\"][\"content\"]",
+							"",
+							"    //期望结果值",
+							"",
+							"    var except_title=String(pm.variables.get(\"title\"));",
+							"    var except_tab=String(pm.variables.get(\"tab\"));",
+							"    var except_content=String(pm.variables.get(\"content\"));",
+							"    console.log(\"实际结果值---\",title,tab,content)",
+							"    console.log(\"期望结果值---\",except_title,except_tab,except_content)",
+							"    pm.test(\"检查title字段\", function () {",
+							"        pm.expect(title).to.eql(except_title);",
+							"    });",
+							"",
+							"    pm.test(\"检查tab字段\", function () {",
+							"        pm.expect(tab).to.eql(except_tab);",
+							"    });",
+							"",
+							"    pm.test(\"检查content字段\", function () {",
+							"        pm.expect(content).to.eql(except_content);",
+							"    });",
+							"    ",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "33852c71-59dd-4527-a04b-677b0a297fd8",
+						"exec": [
+							"var status=pm.variables.get(\"status\");",
+							"if (status=='fail'){",
+							"    pm.environment.set(\"topic_id\", \"5c819ea07379877058990d29\");",
+							"    ",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}/topic/{{topic_id}}?mdrender=false",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"topic",
+						"{{topic_id}}"
+					],
+					"query": [
+						{
+							"key": "mdrender",
+							"value": "false"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

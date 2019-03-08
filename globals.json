@@ -1,0 +1,23 @@
+{
+	"id": "c6c226f8-db5d-43eb-86d2-b149f34b2513",
+	"values": [
+		{
+			"key": "base_url",
+			"value": "http://39.107.96.138:3000/api/v1",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "topic_id",
+			"value": "",
+			"enabled": true
+		}
+	],
+	"name": "My Workspace Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2019-03-08T02:46:00.851Z",
+	"_postman_exported_using": "Postman/6.7.4"
+}
